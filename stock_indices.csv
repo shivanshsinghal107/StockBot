@@ -1,17 +1,17 @@
-Country,Indices,URL,,,,,
-Brazil,Bovespa,https://in.finance.yahoo.com/quote/%5EBVSP/,,,,,
-France,CAC 40,https://in.finance.yahoo.com/quote/%5EFCHI/,,,,,
-Germany,DAX,https://finance.yahoo.com/quote/%5Egdaxi/,,,,,
-US,Dow Jones,https://finance.yahoo.com/quote/%5EDJI/,,,,,
-UK,FTSE 100,https://finance.yahoo.com/quote/%5EFTSE/,,,,,
-Hong Kong,Hang Seng,https://finance.yahoo.com/quote/%5EHSI/,,,,,
-Mexican,IPC,https://finance.yahoo.com/quote/%5EMXX/,,,,,
-Indonesia,Jakarta,https://finance.yahoo.com/quote/%5EJKSE/,,,,,
-Malaysia,KLSE,https://finance.yahoo.com/quote/%5EKLSE/,,,,,
-US,Nasdaq,https://finance.yahoo.com/quote/%5EIXIC/,,,,,
-Japan,Nikkei 225,https://finance.yahoo.com/quote/%5EN225?p=%5EN225,,,,,
-India,Sensex,https://in.finance.yahoo.com/quote/%5EBSESN/,,,,,
-South Korea,Seoul,https://finance.yahoo.com/quote/018680.KQ/,,,,,
-Singapore,Straits Times,https://sg.finance.yahoo.com/quote/%5ESTI/,,,,,
-Switzerland,Swiss Market,https://finance.yahoo.com/quote/%5ESSMI/,,,,,
-Taiwan,Taiwan Weighted,https://finance.yahoo.com/quote/%5Etwii?ltr=1,,,,,
+Country,Indices,URL
+BRAZIL,BOVESPA,https://in.finance.yahoo.com/quote/%5EBVSP/
+FRANCE,CAC 40,https://in.finance.yahoo.com/quote/%5EFCHI/
+GERMANY,DAX,https://finance.yahoo.com/quote/%5Egdaxi/
+US,DOW JONES,https://finance.yahoo.com/quote/%5EDJI/
+UK,FTSE 100,https://finance.yahoo.com/quote/%5EFTSE/
+HONG KONG,HANG SENG,https://finance.yahoo.com/quote/%5EHSI/
+MEXICO,IPC,https://finance.yahoo.com/quote/%5EMXX/
+INDONESIA,JAKARTA,https://finance.yahoo.com/quote/%5EJKSE/
+MALAYSIA,KLSE,https://finance.yahoo.com/quote/%5EKLSE/
+US,NASDAQ,https://finance.yahoo.com/quote/%5EIXIC/
+JAPAN,NIKKEI 225,https://finance.yahoo.com/quote/%5EN225?p=%5EN225
+INDIA,SENSEX,https://in.finance.yahoo.com/quote/%5EBSESN/
+SOUTH KOREA,SEOUL,https://finance.yahoo.com/quote/018680.KQ/
+SINGAPORE,STRAITS TIMES,https://sg.finance.yahoo.com/quote/%5ESTI/
+SWITZERLAND,SWISS MARKET,https://finance.yahoo.com/quote/%5ESSMI/
+TAIWAN,TAIWAN WEIGHTED,https://finance.yahoo.com/quote/%5Etwii?ltr=1
