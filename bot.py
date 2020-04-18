@@ -17,43 +17,37 @@ def index_price(country):
     # load csv and get dataframe
     df = pd.read_csv('stock_indices.csv')
 
-    # making all country names capital so that comparison btw country variable and country column is insensitive
-    df['Country'] = df['Country'].str.upper()
-    df['Indices'] = df['Indices'].str.upper()
-    df.drop(columns = ['Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7'], inplace = True)
-
     # check which country user has entered and get its indice
     indice = df[df['Country'].str.contains(country.upper())].reset_index()
     indice.drop(columns = ['index'], inplace = True)
 
-    # loop if one country has more than one indices like US
-    for index in indice.iterrows():
+    try:
+        # loop if one country has more than one indices like US
+        #for index in indice.iterrows():
         # webpage having all countries stock indices
-        try:
-            url = index[1]['URL']
-            stock = index[1]['Indices']
-            name = index[1]['Country']
-            
-            response = requests.get(url)
-            soup = BeautifulSoup(response.text, "html.parser")
-            
-            # getting stock price
-            price = soup.find_all('div', {'class' : 'My(6px) Pos(r) smartphone_Mt(6px)'})[0].find('span').text
-            
-            # getting currency string
-            c = soup.find_all('div', {'class' : 'C($tertiaryColor) Fz(12px)'})[0].find('span').text
-            
-            # getting required string for currency by splliting by dot(.)
-            currency = c.rsplit('.')[1]
-            # removing a left spaces from string
-            currency = currency.lstrip()
-            
-            # final printing format for user
-            return price, currency, stock
-            #print('COUNTRY : ' + name + '\n' + stock + ' --> ' + price + '\n' + currency.upper())
-        except:
-            return "No records", "", ""
-        
+        url = indice['URL'][0]
+        stock = indice['Indices'][0]
+
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        # getting stock price
+        price = soup.find_all('div', {'class' : 'My(6px) Pos(r) smartphone_Mt(6px)'})[0].find('span').text
+
+        # getting currency string
+        c = soup.find_all('div', {'class' : 'C($tertiaryColor) Fz(12px)'})[0].find('span').text
+
+        # getting required string for currency by splliting by dot(.)
+        currency = c.rsplit('.')[1]
+        # removing a left spaces from string
+        currency = currency.lstrip()
+        # removing extra words
+        currency = currency.replace("Currency in ", "")
+
+        return price, currency, stock
+    except:
+        return "No records", "", ""
+
 
 def start(update, context):
     context.bot.send_message(chat_id = update.effective_chat.id, text = "Hey there, Wanna know about Stock Market and stuff?")
@@ -63,7 +57,7 @@ def get_stock_prices(update, context):
     # taking country input from user
     # country = input("Tell me the country name: ")
     if context.args == []:
-        context.bot.send_message(chat_id=update.effective_chat.id, text='Type in the KeyWord along with the index command')
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Type in the country name as the KeyWord along with the index command')
         return
     if len(context.args) != 1:
         context.bot.send_message(chat_id=update.effective_chat.id, text='Only one argument allowed')
@@ -73,10 +67,10 @@ def get_stock_prices(update, context):
     price = index_price(country)[0]
     currency = index_price(country)[1]
     index = index_price(country)[2]
-    context.bot.send_message(chat_id=update.effective_chat.id, text= "Currently the " + str(index) + " stands at " + str(price) + str(currency))
+    context.bot.send_message(chat_id=update.effective_chat.id, text= "Currently the " + str(index) + " stands at " + str(price) + " " + str(currency))
 
-    
-        
+
+
 
 def main():
     TOKEN = "1299635754:AAG0RWiaJgKlaFbnHeeeTgTocce7VymITGk"
@@ -97,8 +91,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
