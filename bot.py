@@ -1,28 +1,19 @@
-from telegram.ext import Updater
+from telegram.ext import Updater, CommandHandler
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+'''
 # set up the logging module, so you will know when (and why) things don't work as expected
 import logging
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 
-TOKEN = '1299635754:AAG0RWiaJgKlaFbnHeeeTgTocce7VymITGk'
 updater = Updater(token = TOKEN, use_context = True)
+'''
 
 # Now, you can define a function that should process a specific type of update
-def start(update, context):
-    context.bot.send_message(chat_id = update.effective_chat.id, text = "Hey there, Wanna know about Stock Market and stuff?")
 
-
-from telegram.ext import CommandHandler
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
-
-def get_stock_prices(update, context):
-    # taking country input from user
-    country = input("Tell me the country name: ")
-
+def index_price(country):
     # load csv and get dataframe
     df = pd.read_csv('stock_indices.csv')
 
@@ -38,30 +29,76 @@ def get_stock_prices(update, context):
     # loop if one country has more than one indices like US
     for index in indice.iterrows():
         # webpage having all countries stock indices
-        url = index[1]['URL']
-        stock = index[1]['Indices']
-        name = index[1]['Country']
+        try:
+            url = index[1]['URL']
+            stock = index[1]['Indices']
+            name = index[1]['Country']
+            
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, "html.parser")
+            
+            # getting stock price
+            price = soup.find_all('div', {'class' : 'My(6px) Pos(r) smartphone_Mt(6px)'})[0].find('span').text
+            
+            # getting currency string
+            c = soup.find_all('div', {'class' : 'C($tertiaryColor) Fz(12px)'})[0].find('span').text
+            
+            # getting required string for currency by splliting by dot(.)
+            currency = c.rsplit('.')[1]
+            # removing a left spaces from string
+            currency = currency.lstrip()
+            
+            # final printing format for user
+            return price, currency, stock
+            #print('COUNTRY : ' + name + '\n' + stock + ' --> ' + price + '\n' + currency.upper())
+        except:
+            return "No records", "", ""
+        
 
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text, "html.parser")
-
-        # getting stock price
-        price = soup.find_all('div', {'class' : 'My(6px) Pos(r) smartphone_Mt(6px)'})[0].find('span').text
-
-        # getting currency string
-        c = soup.find_all('div', {'class' : 'C($tertiaryColor) Fz(12px)'})[0].find('span').text
-
-        # getting required string for currency by splliting by dot(.)
-        currency = c.rsplit('.')[1]
-        # removing a left spaces from string
-        currency = currency.lstrip()
-
-        # final printing format for user
-        print('COUNTRY : ' + name + '\n' + stock + ' --> ' + price + '\n' + currency.upper())
+def start(update, context):
+    context.bot.send_message(chat_id = update.effective_chat.id, text = "Hey there, Wanna know about Stock Market and stuff?")
 
 
-stock_handler = CommandHandler('stock', get_stock_prices)
-dispatcher.add_handler(stock_handler)
+def get_stock_prices(update, context):
+    # taking country input from user
+    # country = input("Tell me the country name: ")
+    if context.args == []:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Type in the KeyWord along with the index command')
+        return
+    if len(context.args) != 1:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Only one argument allowed')
+        return
+    context.bot.send_message(chat_id=update.effective_chat.id, text= "Just a sec! Finding related info!")
+    country = context.args[0]
+    price = index_price(country)[0]
+    currency = index_price(country)[1]
+    index = index_price(country)[2]
+    context.bot.send_message(chat_id=update.effective_chat.id, text= "Currently the " + str(index) + " stands at " + str(price) + str(currency))
+
+    
+        
+
+def main():
+    TOKEN = "1299635754:AAG0RWiaJgKlaFbnHeeeTgTocce7VymITGk"
+    #PORT = int(os.environ.get('PORT', '8443'))
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+    start_handler = CommandHandler('start', start)
+    dp.add_handler(start_handler)
+    stock_handler = CommandHandler('index', get_stock_prices)
+    dp.add_handler(stock_handler)
+    updater.start_polling()
+    updater.idle()
+'''
+    updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
+    updater.bot.set_webhook("https://<>.com/" + TOKEN)
+'''
 
 
-updater.start_polling()
+if __name__ == '__main__':
+    main()
+
+
+
+
+
