@@ -21,12 +21,18 @@ def index_price(country):
     indice = df[df['Country'].str.contains(country.upper())].reset_index()
     indice.drop(columns = ['index'], inplace = True)
 
-    try:
-        # loop if one country has more than one indices like US
-        #for index in indice.iterrows():
+    # if indice is empty that means the given country is not in the database
+    if(indice.empty):
+        return " "
+
+    # initializing indexes variable
+    indexes = ""
+
+    # loop if one country has more than one indices like US
+    for index in indice.iterrows():
         # webpage having all countries stock indices
-        url = indice['URL'][0]
-        stock = indice['Indices'][0]
+        url = index[1]['URL']
+        stock = index[1]['Indices']
 
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -44,14 +50,21 @@ def index_price(country):
         # removing extra words
         currency = currency.replace("Currency in ", "")
 
-        return price, currency, stock
-    except:
-        return "No records", "", ""
+        indexes += "Currently the " + str(stock) + " stands at " + str(price) + " " + str(currency) + "\n"
+
+    return indexes
 
 
 def start(update, context):
     context.bot.send_message(chat_id = update.effective_chat.id, text = "Hey there, Wanna know about Stock Market and stuff?")
 
+def get_country_list(update, context):
+        df = pd.read_csv('stock_indices.csv')
+        countries = "Here is your list:\n"
+        # really smart move
+        for c in df['Country']:
+            countries += c + "\n"
+        context.bot.send_message(chat_id = update.effective_chat.id, text = countries)
 
 def get_stock_prices(update, context):
     # taking country input from user
@@ -59,15 +72,16 @@ def get_stock_prices(update, context):
     if context.args == []:
         context.bot.send_message(chat_id=update.effective_chat.id, text='Type in the country name as the KeyWord along with the index command')
         return
-    if len(context.args) != 1:
-        context.bot.send_message(chat_id=update.effective_chat.id, text='Only one argument allowed')
-        return
+    #if len(context.args) != 1:
+    #    context.bot.send_message(chat_id=update.effective_chat.id, text='Only one argument allowed')
+    #    return
     context.bot.send_message(chat_id=update.effective_chat.id, text= "Just a sec! Finding related info!")
-    country = context.args[0]
-    price = index_price(country)[0]
-    currency = index_price(country)[1]
-    index = index_price(country)[2]
-    context.bot.send_message(chat_id=update.effective_chat.id, text= "Currently the " + str(index) + " stands at " + str(price) + " " + str(currency))
+    country = " ".join(context.args)
+    stock_indices = index_price(country)
+    if(stock_indices == " "):
+        context.bot.send_message(chat_id=update.effective_chat.id, text= "Sorry, I don't have data for this. Take a look at the country list by command /country.")
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stock_indices)
 
 
 
@@ -81,6 +95,8 @@ def main():
     dp.add_handler(start_handler)
     stock_handler = CommandHandler('index', get_stock_prices)
     dp.add_handler(stock_handler)
+    country_handler = CommandHandler('country', get_country_list)
+    dp.add_handler(country_handler)
     updater.start_polling()
     updater.idle()
 '''
