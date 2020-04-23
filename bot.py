@@ -119,13 +119,13 @@ def get_stock_prices(update, context):
 # function to display commodity price for a given commodity
 def get_commodity_prices(update, context):
     if context.args == []:
-        context.bot.send_message(chat_id = update.effective_chat.id, text = 'Type in the commodity as the KeyWord along with the /comm command.')
+        context.bot.send_message(chat_id = update.effective_chat.id, text = 'Type in the commodity as the KeyWord along with the /com command.')
         return
     context.bot.send_message(chat_id = update.effective_chat.id, text = "Just a sec! Finding related info!")
     commodity = " ".join(context.args)
     commodities = commodity_price(commodity)
     if(commodities == " "):
-        context.bot.send_message(chat_id=update.effective_chat.id, text= "Sorry, I don't have data for this. Take a look at the country list by command /commlist.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text= "Sorry, I don't have data for this. Take a look at the commodity list by command /comlist.")
     else:
         context.bot.send_message(chat_id = update.effective_chat.id, text = commodities)
 
@@ -143,9 +143,9 @@ def main():
     dp.add_handler(stock_handler)
     country_handler = CommandHandler('country', get_country_list)
     dp.add_handler(country_handler)
-    commodity_handler = CommandHandler('commlist', get_commodity_list)
+    commodity_handler = CommandHandler('comlist', get_commodity_list)
     dp.add_handler(commodity_handler)
-    commodity_price_handler = CommandHandler('comm', get_commodity_prices)
+    commodity_price_handler = CommandHandler('com', get_commodity_prices)
     dp.add_handler(commodity_price_handler)
     updater.start_polling()
     updater.idle()
