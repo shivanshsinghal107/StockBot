@@ -1,4 +1,5 @@
 from telegram.ext import Updater, CommandHandler
+import config
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -133,7 +134,7 @@ def get_commodity_prices(update, context):
 
 
 def main():
-    TOKEN = "1299635754:AAG0RWiaJgKlaFbnHeeeTgTocce7VymITGk"
+    TOKEN = config.API_TOKEN
     #PORT = int(os.environ.get('PORT', '8443'))
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
