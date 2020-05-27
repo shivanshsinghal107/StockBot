@@ -1,5 +1,5 @@
 # StockBot [(@AryavartaBot)](https://t.me/AryavartaBot)
-A python telegram bot to fetch real time finance data of different stocks
+A python telegram bot to fetch real time finance data of different stocks, top and latest finance news articles, and articles of Algorithmic Trading from various websites.
 
 ## Commands
 - **/news** - gets you the latest finance news articles
