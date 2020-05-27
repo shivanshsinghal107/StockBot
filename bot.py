@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 from pandas_datareader import data as pdr
 from io import BytesIO
+import os
 
 
 # function to get latest finance news articles
@@ -267,6 +268,19 @@ def get_commodity_prices(update, context):
     else:
         context.bot.send_message(chat_id = update.effective_chat.id, text = commodities)
 
+# function to get list of all commands
+def get_commands(update, context):
+    context.bot.send_message(chat_id = update.effective_chat.id, text = '''
+/news - get the latest finance news articles
+/quantopian - get top articles of Algorithmic Trading from Quantopian
+/alpha - get top algo trading models
+/quantstart - get top articles of Algorithmic Trading from Quantstart
+/country - get the list of countries the bot has the data for
+/index - get real time price & chart of stock indices of a given country
+/comlist - get the list of commodities the bot has the data for
+/com - get real time price of a given commodity
+/help - get list of commands of the bot''')
+
 
 
 
@@ -293,12 +307,12 @@ def main():
     dp.add_handler(commodity_handler)
     commodity_price_handler = CommandHandler('com', get_commodity_prices)
     dp.add_handler(commodity_price_handler)
-    updater.start_polling()
+    command_handler = CommandHandler('help', get_commands)
+    dp.add_handler(command_handler)
     updater.idle()
-'''
+    PORT = int(os.environ.get('PORT', 5000))
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
     updater.bot.set_webhook("https://<>.com/" + TOKEN)
-'''
 
 
 if __name__ == '__main__':
