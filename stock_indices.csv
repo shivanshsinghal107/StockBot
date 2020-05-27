@@ -9,7 +9,7 @@ MEXICO,IPC,https://finance.yahoo.com/quote/%5EMXX/
 INDONESIA,JAKARTA,https://finance.yahoo.com/quote/%5EJKSE/
 MALAYSIA,KLSE,https://finance.yahoo.com/quote/%5EKLSE/
 US,NASDAQ,https://finance.yahoo.com/quote/%5EIXIC/
-JAPAN,NIKKEI 225,https://finance.yahoo.com/quote/%5EN225
+JAPAN,NIKKEI 225,https://finance.yahoo.com/quote/%5EN225/
 INDIA,SENSEX,https://in.finance.yahoo.com/quote/%5EBSESN/
 SOUTH KOREA,SEOUL,https://finance.yahoo.com/quote/018680.KQ/
 SINGAPORE,STRAITS TIMES,https://sg.finance.yahoo.com/quote/%5ESTI/
