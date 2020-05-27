@@ -312,7 +312,10 @@ def main():
     PORT = int(os.environ.get('PORT', 5000))
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
     updater.bot.set_webhook("https://aryavarta-bot.herokuapp.com/" + TOKEN)
+<<<<<<< HEAD
     updater.idle()
+=======
+>>>>>>> 0686ed59b3b4ea03293aac1aa999cc53aa118c12
 
 
 if __name__ == '__main__':
