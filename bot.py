@@ -312,7 +312,7 @@ def main():
     updater.idle()
     PORT = int(os.environ.get('PORT', 5000))
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
-    updater.bot.set_webhook("https://<>.com/" + TOKEN)
+    updater.bot.set_webhook("https://still-bastion-02166.herokuapp.com/" + TOKEN)
 
 
 if __name__ == '__main__':
