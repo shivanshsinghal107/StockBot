@@ -26,7 +26,7 @@ def get_news():
         if len(link.text) > 30:
             hrefs.append(link['href'])
 
-    top5 = "Here's your latest finance news atricles:\n"
+    top5 = "Here's your latest finance news articles:\n"
     for i in range(0, 5):
         top5 += headlines[i] + "\n" + hrefs[i] + "\n"
     return top5
