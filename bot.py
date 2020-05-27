@@ -309,10 +309,10 @@ def main():
     dp.add_handler(commodity_price_handler)
     command_handler = CommandHandler('help', get_commands)
     dp.add_handler(command_handler)
-    updater.idle()
     PORT = int(os.environ.get('PORT', 5000))
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
-    updater.bot.set_webhook("https://<>.com/" + TOKEN)
+    updater.bot.set_webhook("https://aryavarta-bot.herokuapp.com/" + TOKEN)
+    updater.idle()
 
 
 if __name__ == '__main__':
