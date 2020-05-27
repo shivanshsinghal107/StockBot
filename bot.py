@@ -3,7 +3,33 @@ import config
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import matplotlib.pyplot as plt
+import yfinance as yf
+from pandas_datareader import data as pdr
+from io import BytesIO
 
+
+# function to get latest finance news articles
+def get_news():
+    res = requests.get("https://www.cnbc.com/world/?region=world")
+    soup = BeautifulSoup(res.text, 'html.parser')
+    news = soup.select('#MainContent > div:nth-child(2) > div > div > div:nth-child(6) > div.PageBuilder-col-6.PageBuilder-col')[0]
+    links = news.find_all('a')
+
+    headlines = []
+    for link in links:
+        if len(link.text) > 30:
+            headlines.append(link.text)
+
+    hrefs = []
+    for link in links:
+        if len(link.text) > 30:
+            hrefs.append(link['href'])
+
+    top5 = "Here's your latest finance news atricles:\n"
+    for i in range(0, 5):
+        top5 += headlines[i] + "\n" + hrefs[i] + "\n"
+    return top5
 
 # function to get stock prices of indexes of given country
 def index_price(country):
@@ -87,6 +113,12 @@ def commodity_price(commodity):
 def start(update, context):
     context.bot.send_message(chat_id = update.effective_chat.id, text = "Hey there, Wanna know about Stock Market and stuff?")
 
+# function to display top 5 finance news headlines
+def get_top_news(update, context):
+    context.bot.send_message(chat_id = update.effective_chat.id, text = "Just a sec! Fetching latest finance news!")
+    top5 = get_news()
+    context.bot.send_message(chat_id = update.effective_chat.id, text = top5)
+
 # function to display country list the bot has
 def get_country_list(update, context):
         df = pd.read_csv('stock_indices.csv')
@@ -115,7 +147,23 @@ def get_stock_prices(update, context):
     if(stock_indices == " "):
         context.bot.send_message(chat_id=update.effective_chat.id, text= "Sorry, I don't have data for this. Take a look at the country list by command /country.")
     else:
+        df = pd.read_csv('stock_indices.csv')
+        yf.pdr_override()
+        df['Symbol'] = df['URL'].apply(lambda x: '^'+x.split("%5E")[1][:-1] if "%5E" in x else x.split("quote/")[1][:-1])
+        index = df.loc[df['Country'] == country.upper()].index.values
+        data = pdr.get_data_yahoo(df.loc[index[0], 'Symbol'], start='2019-11-01')
+
+        fig = plt.figure()
+        ax = (data['Close'] / data['Close'].iloc[0] * 100).plot(figsize=(15, 6))
+        plt.xlabel('DATE')
+        plt.ylabel('PRICE')
+        plt.title(df.loc[df['Country'] == country.upper()]['Indices'].values[0])
+        plt.fill_between(data.index, data.Close)
+        buffer = BytesIO()
+        fig.savefig(buffer, format='png')
+        buffer.seek(0)
         context.bot.send_message(chat_id=update.effective_chat.id, text = stock_indices)
+        context.bot.send_photo(chat_id = update.effective_chat.id, photo = buffer)
 
 # function to display commodity price for a given commodity
 def get_commodity_prices(update, context):
@@ -140,6 +188,8 @@ def main():
     dp = updater.dispatcher
     start_handler = CommandHandler('start', start)
     dp.add_handler(start_handler)
+    news_handler = CommandHandler('news', get_top_news)
+    dp.add_handler(news_handler)
     stock_handler = CommandHandler('index', get_stock_prices)
     dp.add_handler(stock_handler)
     country_handler = CommandHandler('country', get_country_list)
