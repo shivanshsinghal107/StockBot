@@ -2,7 +2,11 @@
 A python telegram bot to fetch real time finance data of different stocks
 
 ## Commands
-**/country** - gets you the list of countries the bot has the data for<br>
-**/index *country*** - gets you real time price of stock indices of a given country<br>
-**/comlist** - gets you the list of commodities the bot has the data for<br>
-**/com *commodity*** - gets you real time price of a given commodity<br>
+- **/news** - gets you the latest finance news articles
+- **/quantopian** - gets you top articles of Algorithmic Trading from Quantopian
+- **/alpha** - gets you top articles of Algorithmic Trading from Quantocracy
+- **/quantstart** - gets you top articles of Algorithmic Trading from Quantstart
+- **/country** - gets you the list of countries the bot has the data for
+- **/index *country*** - gets you real time price of stock indices of a given country along with the chart of variation of stock indice
+- **/comlist** - gets you the list of commodities the bot has the data for
+- **/com *commodity*** - gets you real time price of a given commodity
