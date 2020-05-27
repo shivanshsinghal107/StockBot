@@ -1,5 +1,4 @@
 from telegram.ext import Updater, CommandHandler
-import config
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
