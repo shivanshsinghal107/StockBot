@@ -182,7 +182,17 @@ def commodity_price(commodity):
 
 
 def start(update, context):
-    context.bot.send_message(chat_id = update.effective_chat.id, text = "Hey there, Wanna know about Stock Market and stuff?")
+    context.bot.send_message(chat_id = update.effective_chat.id, text = '''
+Use these commands to use the bot:
+/news - get the latest finance news articles
+/quantopian - get top articles of Algorithmic Trading from Quantopian
+/alpha - get top algo trading models
+/quantstart - get top articles of Algorithmic Trading from Quantstart
+/country - get the list of countries the bot has the data for
+/index - get real time price & chart of stock indices of a given country
+/comlist - get the list of commodities the bot has the data for
+/com - get real time price of a given commodity
+/help - get list of commands of the bot''')
 
 # function to display top 5 finance news headlines
 def get_top_news(update, context):
