@@ -295,7 +295,6 @@ def get_commands(update, context):
 
 def main():
     TOKEN = os.getenv("TOKEN")
-    #PORT = int(os.environ.get('PORT', '8443'))
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     start_handler = CommandHandler('start', start)
