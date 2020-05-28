@@ -1,5 +1,5 @@
-# CEV Aryavarta [(@AryavartaBot)](https://t.me/AryavartaBot)
-A python telegram bot to fetch real-time global financial market indices, latest news articles in world of finance & business, and articles of math models & finance for algorithmic trading.
+# CEV Aryavarta Bot [(@AryavartaBot)](https://t.me/AryavartaBot)
+A python telegram bot to fetch real-time global financial market indices, prices of several commodities, and latest news articles in the world of finance & business. Get the latest open source alphas (math models for algorithmic trading) & learn mathematical finance from articles published on the Quantopian (democratized learning platforms).
 
 ## Commands
 - **/news** - get latest news articles in the world of finance & business
